@@ -34,11 +34,7 @@ local function ClubViewEvent( event )
 	return true
 end
 -- initial state/page the app will start on
-<<<<<<< HEAD
-function onHomeView( event )
-=======
 local function onHomeView( event )
->>>>>>> 604223ba236ad3d242cac14ce9af561b0186bd61
 	composer.gotoScene( "home" )
 end
 -- create a tabBar widget with two buttons at the bottom of the screen

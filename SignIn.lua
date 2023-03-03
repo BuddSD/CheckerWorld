@@ -4,55 +4,65 @@
 --
 -----------------------------------------------------------------------------------------
 
-<<<<<<< HEAD
+
 local composer = require "composer"
-=======
-local composer = require "composer" 
->>>>>>> 604223ba236ad3d242cac14ce9af561b0186bd61
+local composer = require "composer"
 local widget = require "widget"
 local scene = composer.newScene()
+
+-- database connection for signing in 
+local sqllib = require( "sqlite3" )
+local dbFile = 'CheckerWorldUsers.db'
+local db = sqllib.open(dbFile)
+
+local function textListener(event)
+	-- "event.text" only exists during the editing phase to show what's being edited.
+	-- it is NOT the field's ".text" attribute. that is "event.target.text"
+	if ( event.phase == "begin" ) then
+		-- user begins adding text to textField
+	elseif ( event.phase == "ended" or event.phase == "submitted" ) then
+		-- save textField's text
+	elseif ( event.phase == "editing" ) then
+		print( event.newCharacters )
+		print( event.oldText )
+		print( event.startPosition )
+		print( event.text )
+	end
+end
+
 
 function scene:create( event )
 	local sceneGroup = self.view
 
-<<<<<<< HEAD
 	local pageGroup = display.newGroup()
 
     -- create black background to fill screen
 	local background = display.newRect( display.contentCenterX, display.contentCenterY, display.contentWidth, display.contentHeight )
 	background:setFillColor(0,0,0)
+	pageGroup:insert(background)
 
-
-=======
-    -- create black background to fill screen
-	local background = display.newRect( display.contentCenterX, display.contentCenterY, display.contentWidth, display.contentHeight )
-	background:setFillColor(0,0,0)
->>>>>>> 604223ba236ad3d242cac14ce9af561b0186bd61
-	-- create a black background to fill screen
+	-- create a logo
 	local logo = display.newImageRect( "img/CheckerWorldLogo.png", 95, 65 )
 	logo.x = display.contentCenterX-100
 	logo.y = display.contentCenterY-300
-<<<<<<< HEAD
+	pageGroup:insert(logo)
 
-	-- create some text
+	-- create some text for the site title
 	local title = display.newText( "CHECKER WORLD", logo.x+155, logo.y, native.systemFont, 20 )
 	title:setFillColor( 244,233, 0)	-- yellow
-=======
-	-- create some text
-	local title = display.newText( "CHECKER WORLD", logo.x+155, logo.y, native.systemFont, 20 )
-	title:setFillColor( 244,233, 0)	-- yellow 
->>>>>>> 604223ba236ad3d242cac14ce9af561b0186bd61
+	pageGroup:insert(title)
 
-
+	--create some text for the page title
 	local newTextParams = { text = "SIGN IN",
-						x = display.contentCenterX,
-						y = title.y + 200,
-						width = 310, height = 100,
-						font = native.systemFont, fontSize = 22,
-						align = "center" }
+		x = display.contentCenterX,
+		y = title.y + 200,
+		width = 310, height = 100,
+		font = native.systemFont, fontSize = 22,
+		align = "center"
+	}
 	local summary = display.newText( newTextParams )
 	summary:setFillColor( 255,255,255 ) -- white
-<<<<<<< HEAD
+	pageGroup:insert(summary)
 
 	local signInGroup = display.newRoundedRect( display.contentCenterX,display.contentCenterY,display.contentWidth-20,200,12 )
 	signInGroup.strokeWidth = 2
@@ -60,14 +70,6 @@ function scene:create( event )
 	signInGroup:setStrokeColor( 244,233,0 )
 	pageGroup:insert( signInGroup )
 
-=======
-	
-	local signInGroup = display.newRoundedRect( display.contentCenterX,display.contentCenterY,display.contentWidth-20,200,12 )
-	signInGroup.strokeWidth = 3
-	signInGroup:setFillColor( 0 )
-	signInGroup:setStrokeColor( 244,233,0 )
-	
->>>>>>> 604223ba236ad3d242cac14ce9af561b0186bd61
 	local userLabel = {
 		text = "User Name",
 		x = 75,
@@ -76,26 +78,11 @@ function scene:create( event )
 		font = native.systemFont, fontSize = 16,
 		align = "center"
 	}
-<<<<<<< HEAD
 
 	local uLabel = display.newText( userLabel )
 	uLabel:setFillColor( 255, 255, 255 ) -- white
 	pageGroup:insert( uLabel )
 
-	local uNameField = native.newTextField(display.contentCenterX,display.contentCenterY-30,display.contentWidth-70, 40)
-	uNameField.strokeWidth = 1
-	uNameField:setFillColor( 0 )
-	uNameField:setStrokeColor( 244, 233, 0 )
-	pageGroup:insert( uNameField )
-
-=======
-	local uLabel = display.newText( userLabel )
-	uLabel:setFillColor( 255, 255, 255 ) -- white 
-	
-	local uNameField = native.newTextField(display.contentCenterX,display.contentCenterY-30,display.contentWidth-70, 40)
-	local uPassField = native.newTextField(display.contentCenterX,display.contentCenterY+50,display.contentWidth-70, 40)
-	
->>>>>>> 604223ba236ad3d242cac14ce9af561b0186bd61
 	local passLabel = {
 		text = "Password",
 		x = 70,
@@ -104,37 +91,58 @@ function scene:create( event )
 		font = native.systemFont, fontSize = 16,
 		align = "center"
 	}
-<<<<<<< HEAD
-	local uPassField = native.newTextField(display.contentCenterX,display.contentCenterY+50,display.contentWidth-70, 40)
-	pageGroup:insert( uPassField )
 
 	local pLabel = display.newText( passLabel )
 	pLabel:setFillColor( 255,255,255 ) -- white
 	pageGroup:insert( pLabel )
 
+	uNameField = native.newTextField(
+		display.contentCenterX,
+		display.contentCenterY-30,
+		display.contentWidth-70, 
+		40
+	)
+	checkName = uNameField:addEventListener( "userInput", textListener )
+
+	uPassField = native.newTextField(
+		display.contentCenterX,
+		display.contentCenterY+50,
+		display.contentWidth-70,
+		40
+	)
+	checkPass = uPassField:addEventListener( "userInput", textListener )
+	-- user variables for sign in
+	local uName
+	local uPass
+
 	-- ButtonSignIn click handling
 	local function handleSignInBtnEvent( event )
 		if ( "ended" == event.phase ) then
 			-- validate credentials
+			uName = sqllib.exec([=[SELECT UserName FROM Members;]=])
+			uPass = sqllib.exec([=[SELECT uPass FROM Members;]=])
+			if ( checkName == uName and checkPass == uPass ) then 
+				-- grant access to rest of app
+				composer.gotoScene("CarHome")
+			-- elseif(checkName != uName or checkPass != uPass) then
+				-- deny access to app and let user try again
+
+			end
 		end
 	end
 
-=======
-	local pLabel = display.newText( passLabel )
-	pLabel:setFillColor( 255,255,255 ) -- white
-	
->>>>>>> 604223ba236ad3d242cac14ce9af561b0186bd61
 	ButtonSignIn = widget.newButton({
         width = 200,
         height = 50,
         label = "Sign In",
+		labelColor = { default={0,0,0}, over={0,0,0} },
         defaultFile = "img/YellowBtn.png",
         overFile = "img/YellowBtnPress.png",
         onEvent = handleSignInBtnEvent
     })
 	ButtonSignIn.x = display.contentCenterX
-    ButtonSignIn.y = signInGroup.y + 200
-<<<<<<< HEAD
+    ButtonSignIn.y = signInGroup.y + 150
+	pageGroup:insert(ButtonSignIn)
 
 	-- ButtonForgotPass click handling
 	local function handleForgotPassBtnEvent( event )
@@ -143,21 +151,19 @@ function scene:create( event )
 		end
 	end
 
-=======
-	
->>>>>>> 604223ba236ad3d242cac14ce9af561b0186bd61
 	ButtonForgotPass = widget.newButton({
         width = 200,
         height = 50,
         label = "Forgot Password?",
+		labelColor = { default={255,255,255}, over={244,233,0} },
         defaultFile = "img/blackBG.png",
         overFile = "img/blackBG.png",
         onEvent = handleForgotPassBtnEvent
     })
 	ButtonForgotPass.x = display.contentCenterX
     ButtonForgotPass.y = signInGroup.y + 275
+	pageGroup:insert(ButtonForgotPass)
 
-<<<<<<< HEAD
 	-- backBtn click handling
 	local function handleButtonBackEvent( event )
 		if ( "ended" == event.phase ) then
@@ -169,32 +175,23 @@ function scene:create( event )
         width = 100,
         height = 50,
         label = "< Back",
+		labelColor = { default={255,255,255}, over={244,233,0} },
         defaultFile = "img/blackBG.png",
         overFile = "img/blackBG.png",
         onEvent = handleButtonBackEvent
     })
 	ButtonBack.x = display.contentCenterX
 	ButtonBack.y = 550
+	pageGroup:insert(ButtonBack)
 
-=======
->>>>>>> 604223ba236ad3d242cac14ce9af561b0186bd61
 	-- all objects must be added to group (e.g. self.view)
 	sceneGroup:insert( background )
 	sceneGroup:insert( logo )
 	sceneGroup:insert( title )
 	sceneGroup:insert( summary )
-<<<<<<< HEAD
-	sceneGroup:insert( signInGroup )
-	sceneGroup:insert( uLabel )
+	sceneGroup:insert( pageGroup )
 	sceneGroup:insert( uNameField )
 	sceneGroup:insert( uPassField )
-	sceneGroup:insert( pLabel )
-	sceneGroup:insert( ButtonBack )
-	sceneGroup:insert( ButtonForgotPass )
-	sceneGroup:insert( ButtonSignIn )
-	sceneGroup:insert( pageGroup )
-=======
->>>>>>> 604223ba236ad3d242cac14ce9af561b0186bd61
 end
 
 function scene:show( event )
@@ -207,6 +204,7 @@ function scene:show( event )
 		-- Called when the scene is now on screen
         local tabBar = composer.getVariable("savedTabBar")
         tabBar.isVisible = false
+
 		-- INSERT code here to make the scene come alive
 		-- e.g. start timers, begin animation, play audio, etc.
 	end
@@ -216,9 +214,18 @@ function scene:hide( event )
 	local sceneGroup = self.view
 	local phase = event.phase
 
+	if (uNameField) then
+		uNameField:removeSelf()
+		uNameField = nil
+	end
+
+	if (uPassField) then
+		uPassField:removeSelf()
+		uPassField = nil
+	end
+
 	if event.phase == "will" then
 		-- Called when the scene is on screen and is about to move off screen
-		--
 		-- INSERT code here to pause the scene
 		-- e.g. stop timers, stop animation, unload sounds, etc.)
 	elseif phase == "did" then
@@ -231,10 +238,8 @@ function scene:destroy( event )
 
 	-- Called prior to the removal of scene's "view" (sceneGroup)
 	--
-<<<<<<< HEAD
+	
 	sceneGroup.remove()
-=======
->>>>>>> 604223ba236ad3d242cac14ce9af561b0186bd61
 	-- INSERT code here to cleanup the scene
 	-- e.g. remove display objects, remove touch listeners, save state, etc.
 end
