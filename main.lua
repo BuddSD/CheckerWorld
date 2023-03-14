@@ -10,6 +10,39 @@ display.setStatusBar( display.HiddenStatusBar )
 -- include Corona's "widget" library
 local widget = require "widget"
 local composer = require "composer"
+local sqlite = require( "sqlite3" )
+
+path = system.pathForFile( "CheckerWorldUsers.db", system.DocumentsDirectory )
+db = sqlite.open(path)
+
+function checkCredentials(_name, _pass)
+	-- copy the db locally
+	local users = {}
+	for row in db:nrows( "SELECT * FROM Members" ) do
+		print("Row: ", row.UserID)
+		users[#users+1] = {checkName = row.UserName, checkPass = row.uPass}
+	end
+	print(users)
+end
+
+
+function textListener(event)
+	-- "event.text" only exists during the editing phase to show what's being edited.
+	-- it is NOT the field's ".text" attribute. that is "event.target.text"
+	if ( event.phase == "begin" ) then
+		-- user begins adding text to textField
+		event.target.text = ""
+	elseif ( event.phase == "ended" or event.phase == "submitted" ) then
+		-- save textField's text
+		print( event.name, event.phase, "Final Text: ", event.target.text )
+		text = event.target.text
+	elseif ( event.phase == "editing" ) then
+		print( event.newCharacters )
+		print( event.oldText )
+		print( event.startPosition )
+		print( event.text )
+	end
+end
 
 local labelColors = {
 	default = { .96,.91,.04,1 },
@@ -17,7 +50,7 @@ local labelColors = {
 }
 
 -- event listeners for tab buttons:
-local function CarViewEvent( event )
+function CarView( event )
 	if ( event.phase == "ended" ) then
 		composer.gotoScene( "CarHome" )
 	else
@@ -25,7 +58,7 @@ local function CarViewEvent( event )
 	end
 	return true
 end
-local function ClubViewEvent( event )
+function ClubView( event )
 	if ( event.phase == "ended" ) then
 		composer.gotoScene( "ClubHome" )
 	else
@@ -34,7 +67,7 @@ local function ClubViewEvent( event )
 	return true
 end
 -- initial state/page the app will start on
-local function onHomeView( event )
+function onHomeView( event )
 	composer.gotoScene( "home" )
 end
 -- create a tabBar widget with two buttons at the bottom of the screen

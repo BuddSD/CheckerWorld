@@ -6,13 +6,16 @@
 
 local composer = require "composer"
 local widget = require "widget"
-local sqlite3 = require( "sqlite3" )
 local scene = composer.newScene()
 
-local path = system.pathForFile( "data.db", system.DocumentsDirectory )
+-- database connection for signing in
+local sqlite = require( "sqlite3" )
+path = system.pathForFile( "data.db", system.DocumentsDirectory )
+db = sqlite.open(path)
 
 function scene:create( event )
     local sceneGroup = self.view
+    local pageGroup = display.newGroup()
 
     -- create a black background to fill screen
 	local background = display.newRect( display.contentCenterX, display.contentCenterY, display.contentWidth, display.contentHeight )
@@ -41,13 +44,13 @@ function scene:create( event )
     _subTitle = display.newText( SubTitle )
     _subTitle:setFillColor( 255,255,255 )
 
-    local function handleSignInBtnEvent( event )
+    function handleSignInBtnEvent( event )
         if ( "ended" == event.phase ) then
             composer.gotoScene( "SignIn" )
         end
     end
 
-    local function handleSignUpBtnEvent( event )
+    function handleSignUpBtnEvent( event )
         if ( "ended" == event.phase ) then
             composer.gotoScene( "SignUp" )
         end

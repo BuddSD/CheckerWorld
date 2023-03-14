@@ -8,6 +8,9 @@ local widget = require "widget"
 local scene = composer.newScene()
 
 function scene:create( event )
+	local sceneGroup = self.view
+	local pageGroup = display.newGroup()
+
 	-- create black background to fill screen
 	local background = display.newRect( display.contentCenterX, display.contentCenterY, display.contentWidth, display.contentHeight )
 	background:setFillColor(0,0,0)

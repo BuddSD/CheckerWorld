@@ -6,34 +6,14 @@
 
 
 local composer = require "composer"
-local composer = require "composer"
 local widget = require "widget"
 local scene = composer.newScene()
 
 -- database connection for signing in 
-local sqllib = require( "sqlite3" )
-local dbFile = 'CheckerWorldUsers.db'
-local db = sqllib.open(dbFile)
-
-local function textListener(event)
-	-- "event.text" only exists during the editing phase to show what's being edited.
-	-- it is NOT the field's ".text" attribute. that is "event.target.text"
-	if ( event.phase == "begin" ) then
-		-- user begins adding text to textField
-	elseif ( event.phase == "ended" or event.phase == "submitted" ) then
-		-- save textField's text
-	elseif ( event.phase == "editing" ) then
-		print( event.newCharacters )
-		print( event.oldText )
-		print( event.startPosition )
-		print( event.text )
-	end
-end
-
+local sqlite = require( "sqlite3" )
 
 function scene:create( event )
 	local sceneGroup = self.view
-
 	local pageGroup = display.newGroup()
 
     -- create black background to fill screen
@@ -101,9 +81,9 @@ function scene:create( event )
 		display.contentCenterY-30,
 		display.contentWidth-70, 
 		40
-	)
+	)	
 	checkName = uNameField:addEventListener( "userInput", textListener )
-
+	
 	uPassField = native.newTextField(
 		display.contentCenterX,
 		display.contentCenterY+50,
@@ -111,22 +91,37 @@ function scene:create( event )
 		40
 	)
 	checkPass = uPassField:addEventListener( "userInput", textListener )
-	-- user variables for sign in
-	local uName
-	local uPass
 
 	-- ButtonSignIn click handling
-	local function handleSignInBtnEvent( event )
+	local function handleSignInEvent( event )
 		if ( "ended" == event.phase ) then
-			-- validate credentials
-			uName = sqllib.exec([=[SELECT UserName FROM Members;]=])
-			uPass = sqllib.exec([=[SELECT uPass FROM Members;]=])
-			if ( checkName == uName and checkPass == uPass ) then 
-				-- grant access to rest of app
-				composer.gotoScene("CarHome")
-			-- elseif(checkName != uName or checkPass != uPass) then
-				-- deny access to app and let user try again
+			-- text for user name
+			nameChecked = uNameField.text
 
+			-- text for user password
+			passChecked = uPassField.text
+			
+			-- check database has entries
+			_dbcheck = ("SELECT * FROM Members")
+
+			-- credential check
+			local nameStmt = ( "SELECT * FROM Members WHERE Members.UserName = "..nameChecked..";")
+			local passStmt = ("SELECT * FROM Members WHERE Members.uPass = "..passChecked..";")
+
+			credCheckName = db:exec(nameStmt)
+			credCheckPass = db:exec(passStmt)
+			print(nameStmt)
+			print(passStmt)
+			print("Name :"..credCheckName)
+			print("Pass :"..credCheckPass)
+
+			if(credCheckName == 1 and credCheckPass == 1) then
+				print("User Signed In.")
+				-- Load the Club Home Page 
+				ClubView()
+			else
+				print("Invalid Username or Password. Please try again.")
+				-- reset and reload the current page
 			end
 		end
 	end
@@ -138,7 +133,7 @@ function scene:create( event )
 		labelColor = { default={0,0,0}, over={0,0,0} },
         defaultFile = "img/YellowBtn.png",
         overFile = "img/YellowBtnPress.png",
-        onEvent = handleSignInBtnEvent
+        onEvent = handleSignInEvent
     })
 	ButtonSignIn.x = display.contentCenterX
     ButtonSignIn.y = signInGroup.y + 150
@@ -185,10 +180,6 @@ function scene:create( event )
 	pageGroup:insert(ButtonBack)
 
 	-- all objects must be added to group (e.g. self.view)
-	sceneGroup:insert( background )
-	sceneGroup:insert( logo )
-	sceneGroup:insert( title )
-	sceneGroup:insert( summary )
 	sceneGroup:insert( pageGroup )
 	sceneGroup:insert( uNameField )
 	sceneGroup:insert( uPassField )

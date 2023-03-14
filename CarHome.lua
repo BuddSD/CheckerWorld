@@ -9,6 +9,9 @@ local widget = require "widget"
 local scene = composer.newScene()
 
 function scene:create( event )
+	local sceneGroup = self.view
+	local pageGroup = display.newGroup()
+
 	-- Functions to control the buttons
 	local function forSaleBtnEvent ( event )
 		composer.gotoScene( "CheckerMarket")
@@ -32,15 +35,19 @@ function scene:create( event )
 	-- create black background to fill screen
 	local background = display.newRect( display.contentCenterX, display.contentCenterY, display.contentWidth, display.contentHeight )
 	background:setFillColor(0,0,0)
+	pageGroup:insert(background)
 	
 	-- create a black background to fill screen
 	local logo = display.newImageRect( "img/CheckerWorldLogo.png", 95, 65 )
 	logo.x = display.contentCenterX-100
 	logo.y = display.contentCenterY-300
+	pageGroup:insert(logo)
 	
 	-- create some text
 	local title = display.newText( "CHECKER WORLD", logo.x+155, logo.y, native.systemFontBold, 20 )
 	title:setFillColor( .96,.91,.04 )	-- yellow
+	pageGroup:insert(title)
+
 	
 	-- Button display combo
 	-- Checkers for Sale button begin
@@ -60,6 +67,8 @@ function scene:create( event )
 	fsBorder.strokeWidth = 2
 	fsBorder:setFillColor( 0 )
 	fsBorder:setStrokeColor( .96,.91,.04 )
+	pageGroup:insert(fsBorder)
+	pageGroup:insert(forSaleBtn)
 	-- end
 	-- Checker Photos button begin
 	local photoBorder = display.newRect(display.contentCenterX,fsBorder.y+75, display.contentWidth-24,58,14 )
@@ -80,6 +89,8 @@ function scene:create( event )
 	photoBorder.strokeWidth = 2
 	photoBorder:setFillColor( 0 )
 	photoBorder:setStrokeColor(.96,.91,.04)
+	pageGroup:insert(photoBorder)
+	pageGroup:insert(photosBtn)
 	-- end
 	-- Checker Documents button begin
 	local docsBorder = display.newRect(display.contentCenterX,photoBorder.y+75, display.contentWidth-24,58,14 )
@@ -100,6 +111,8 @@ function scene:create( event )
 	docsBorder.strokeWidth = 2
 	docsBorder:setFillColor( 0 )
 	docsBorder:setStrokeColor( .96,.91,.04 )
+	pageGroup:insert(docsBorder)
+	pageGroup:insert(docsBtn)
 	-- end
 	-- Checker History button begin
 	local historyBorder = display.newRect(display.contentCenterX,docsBorder.y+75, display.contentWidth-24,58,14 )
@@ -120,6 +133,8 @@ function scene:create( event )
 	historyBorder.strokeWidth = 2
 	historyBorder:setFillColor( 0 )
 	historyBorder:setStrokeColor( .96,.91,.04 )
+	pageGroup:insert(historyBorder)
+	pageGroup:insert(historyBtn)
 	-- end	
 	-- Checker Media button begin
 	local mediaBorder = display.newRect(display.contentCenterX,historyBorder.y+75, display.contentWidth-24,58,14 )
@@ -140,6 +155,8 @@ function scene:create( event )
 	mediaBorder.strokeWidth = 2
 	mediaBorder:setFillColor( 0 )
 	mediaBorder:setStrokeColor( .96,.91,.04 )
+	pageGroup:insert(mediaBorder)
+	pageGroup:insert(mediaBtn)
 	-- end
 	-- Checker Contact button begin
 	local contactBorder = display.newRect(display.contentCenterX,mediaBorder.y+75, display.contentWidth-24,58,14 )
@@ -160,7 +177,12 @@ function scene:create( event )
 	contactBorder.strokeWidth = 2
 	contactBorder:setFillColor( 0 )
 	contactBorder:setStrokeColor( .96,.91,.04 )
+	pageGroup:insert(contactBorder)
+	pageGroup:insert(contactBtn)
 	-- end
+
+	-- all objects must be added to  sceneGroup (e.g. self.view)
+	sceneGroup:insert( pageGroup )
 end
 
 function scene:show( event )
@@ -199,6 +221,7 @@ function scene:destroy( event )
 	--
 	-- INSERT code here to cleanup the scene
 	-- e.g. remove display objects, remove touch listeners, save state, etc.
+	pageGroup:remove()
 end
 
 ---------------------------------------------------------------------------------
