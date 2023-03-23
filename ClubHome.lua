@@ -10,7 +10,7 @@ local scene = composer.newScene()
 
 function scene:create( event )
 	local sceneGroup = self.view
-	local pageGroup = display.newGroup()
+	local ClubHomeGroup = display.newGroup()
 
 	-- Functions to control the buttons
 	local function registerBtnEvent ( event )
@@ -35,24 +35,25 @@ function scene:create( event )
 	-- create black background to fill screen
 	local background = display.newRect( display.contentCenterX, display.contentCenterY, display.contentWidth, display.contentHeight )
 	background:setFillColor(0,0,0)
-	pageGroup:insert(background)
+	ClubHomeGroup:insert(background)
 	
 	-- create a black background to fill screen
 	local logo = display.newImageRect( "img/CheckerWorldLogo.png", 95, 65 )
 	logo.x = display.contentCenterX-100
 	logo.y = display.contentCenterY-300
-	pageGroup:insert(logo)
+	ClubHomeGroup:insert(logo)
 	
 	-- create some text
 	local title = display.newText( "CHECKER WORLD", logo.x+155, logo.y, native.systemFont, 20 )
 	title:setFillColor( .96,.91,.04 )	-- yellow
-	pageGroup:insert(title)
+	ClubHomeGroup:insert(title)
 	--
 	-- Start of OnScreen buttons for navigating the rest of the site
 	--
 	-- Button display combo
 	-- Register Checker Sale button begin
 	local registerBorder = display.newRect(display.contentCenterX,40, display.contentWidth-24,58,14 )
+
 	local registerBtn = widget.newButton({
 		width = display.contentWidth-30,
 		height = 50,
@@ -68,8 +69,8 @@ function scene:create( event )
 	registerBorder.strokeWidth = 2
 	registerBorder:setFillColor( 0 )
 	registerBorder:setStrokeColor( .96,.91,.04 )
-	pageGroup:insert(registerBorder)
-	pageGroup:insert(registerBtn)
+	ClubHomeGroup:insert(registerBorder)
+	ClubHomeGroup:insert(registerBtn)
 	-- end
 	-- Checker Photos button begin
 	local memberBorder = display.newRect(display.contentCenterX,registerBorder.y+75, display.contentWidth-24,58,14 )
@@ -90,11 +91,12 @@ function scene:create( event )
 	memberBorder.strokeWidth = 2
 	memberBorder:setFillColor( 0 )
 	memberBorder:setStrokeColor( .96,.91,.04 )
-	pageGroup:insert(memberBorder)
-	pageGroup:insert(memberBtn)
+	ClubHomeGroup:insert(memberBorder)
+	ClubHomeGroup:insert(memberBtn)
 	-- end
 	-- Checker Documents button begin
 	local convBorder = display.newRect(display.contentCenterX,memberBorder.y+75, display.contentWidth-24,58,14 )
+
 	local convBtn = widget.newButton({
 		width = display.contentWidth-30,
 		height = 50,
@@ -112,8 +114,8 @@ function scene:create( event )
 	convBorder.strokeWidth = 2
 	convBorder:setFillColor( 0 )
 	convBorder:setStrokeColor( .96,.91,.04 )
-	pageGroup:insert(convBorder)
-	pageGroup:insert(convBtn)
+	ClubHomeGroup:insert(convBorder)
+	ClubHomeGroup:insert(convBtn)
 	-- end
 	-- Checker Documents button begin
 	local linksBorder = display.newRect(display.contentCenterX,convBorder.y+75, display.contentWidth-24,58,14 )
@@ -134,8 +136,8 @@ function scene:create( event )
 	linksBorder.strokeWidth = 2
 	linksBorder:setFillColor( 0 )
 	linksBorder:setStrokeColor( .96,.91,.04 )
-	pageGroup:insert(linksBorder)
-	pageGroup:insert(linksBtn)
+	ClubHomeGroup:insert(linksBorder)
+	ClubHomeGroup:insert(linksBtn)
 	-- end	
 	-- Checker Documents button begin
 	local newsBorder = display.newRect(display.contentCenterX,linksBorder.y+75, display.contentWidth-24,58,14 )
@@ -156,8 +158,8 @@ function scene:create( event )
 	newsBorder.strokeWidth = 2
 	newsBorder:setFillColor( 0 )
 	newsBorder:setStrokeColor( .96,.91,.04 )
-	pageGroup:insert(newsBorder)
-	pageGroup:insert(newsBtn)
+	ClubHomeGroup:insert(newsBorder)
+	ClubHomeGroup:insert(newsBtn)
 	-- end
 	-- Checker Documents button begin
 	local contactBorder = display.newRect(display.contentCenterX,newsBorder.y+75, display.contentWidth-24,58,14 )
@@ -178,12 +180,12 @@ function scene:create( event )
 	contactBorder.strokeWidth = 2
 	contactBorder:setFillColor( 0 )
 	contactBorder:setStrokeColor( .96,.91,.04 )
-	pageGroup:insert(contactBorder)
-	pageGroup:insert(contactBtn)
+	ClubHomeGroup:insert(contactBorder)
+	ClubHomeGroup:insert(contactBtn)
 	-- end
 
 	-- all objects must be added to  sceneGroup (e.g. self.view)
-	sceneGroup:insert( pageGroup )
+	sceneGroup:insert( ClubHomeGroup )
 end
 
 function scene:show( event )
@@ -222,7 +224,7 @@ function scene:destroy( event )
 	--
 	-- INSERT code here to cleanup the scene
 	-- e.g. remove display objects, remove touch listeners, save state, etc.
-	pageGroup:remove()
+	ClubHomeGroup:remove()
 end
 
 ---------------------------------------------------------------------------------

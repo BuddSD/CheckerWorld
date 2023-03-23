@@ -12,25 +12,29 @@ local scene = composer.newScene()
 -- database connection for signing in 
 local sqlite = require( "sqlite3" )
 
+function onStartView( event )
+	composer.gotoScene( "start" )
+end
+
 function scene:create( event )
 	local sceneGroup = self.view
-	local pageGroup = display.newGroup()
+	local SignInGroup = display.newGroup()
 
     -- create black background to fill screen
 	local background = display.newRect( display.contentCenterX, display.contentCenterY, display.contentWidth, display.contentHeight )
 	background:setFillColor(0,0,0)
-	pageGroup:insert(background)
+	SignInGroup:insert(background)
 
 	-- create a logo
 	local logo = display.newImageRect( "img/CheckerWorldLogo.png", 95, 65 )
 	logo.x = display.contentCenterX-100
 	logo.y = display.contentCenterY-300
-	pageGroup:insert(logo)
+	SignInGroup:insert(logo)
 
 	-- create some text for the site title
 	local title = display.newText( "CHECKER WORLD", logo.x+155, logo.y, native.systemFont, 20 )
 	title:setFillColor( 244,233, 0)	-- yellow
-	pageGroup:insert(title)
+	SignInGroup:insert(title)
 
 	--create some text for the page title
 	local newTextParams = { text = "SIGN IN",
@@ -42,13 +46,13 @@ function scene:create( event )
 	}
 	local summary = display.newText( newTextParams )
 	summary:setFillColor( 255,255,255 ) -- white
-	pageGroup:insert(summary)
+	SignInGroup:insert(summary)
 
 	local signInGroup = display.newRoundedRect( display.contentCenterX,display.contentCenterY,display.contentWidth-20,200,12 )
 	signInGroup.strokeWidth = 2
 	signInGroup:setFillColor( 0 )
 	signInGroup:setStrokeColor( 244,233,0 )
-	pageGroup:insert( signInGroup )
+	SignInGroup:insert( signInGroup )
 
 	local userLabel = {
 		text = "User Name",
@@ -61,7 +65,7 @@ function scene:create( event )
 
 	local uLabel = display.newText( userLabel )
 	uLabel:setFillColor( 255, 255, 255 ) -- white
-	pageGroup:insert( uLabel )
+	SignInGroup:insert( uLabel )
 
 	local passLabel = {
 		text = "Password",
@@ -74,7 +78,7 @@ function scene:create( event )
 
 	local pLabel = display.newText( passLabel )
 	pLabel:setFillColor( 255,255,255 ) -- white
-	pageGroup:insert( pLabel )
+	SignInGroup:insert( pLabel )
 
 	uNameField = native.newTextField(
 		display.contentCenterX,
@@ -92,33 +96,29 @@ function scene:create( event )
 	)
 	checkPass = uPassField:addEventListener( "userInput", textListener )
 
+	-- text for user name
+	nameChecked = uNameField.text
+
+	-- text for user password
+	passChecked = uPassField.text
+			
+	-- credential check
+	local nameStmt = ( "SELECT CAST(CASE WHEN COUNT(*) > 0 THEN 1 ELSE 0 END AS BIT) FROM Members WHERE Members.UserName = \""..nameChecked.."\";")
+	local passStmt = ("SELECT CAST(CASE WHEN COUNT(*) > 0 THEN 1 ELSE 0 END AS BIT) FROM Members WHERE uPass = \""..passChecked.."\";")
+
 	-- ButtonSignIn click handling
 	local function handleSignInEvent( event )
 		if ( "ended" == event.phase ) then
-			-- text for user name
-			nameChecked = uNameField.text
-
-			-- text for user password
-			passChecked = uPassField.text
-			
-			-- check database has entries
-			_dbcheck = ("SELECT * FROM Members")
-
-			-- credential check
-			local nameStmt = ( "SELECT * FROM Members WHERE Members.UserName = "..nameChecked..";")
-			local passStmt = ("SELECT * FROM Members WHERE Members.uPass = "..passChecked..";")
-
 			credCheckName = db:exec(nameStmt)
 			credCheckPass = db:exec(passStmt)
-			print(nameStmt)
-			print(passStmt)
-			print("Name :"..credCheckName)
-			print("Pass :"..credCheckPass)
+
+			print(credCheckName)
+			print(credCheckPass)
 
 			if(credCheckName == 1 and credCheckPass == 1) then
 				print("User Signed In.")
 				-- Load the Club Home Page 
-				ClubView()
+				composer.gotoScene("ClubHome")
 			else
 				print("Invalid Username or Password. Please try again.")
 				-- reset and reload the current page
@@ -136,8 +136,8 @@ function scene:create( event )
         onEvent = handleSignInEvent
     })
 	ButtonSignIn.x = display.contentCenterX
-    ButtonSignIn.y = signInGroup.y + 150
-	pageGroup:insert(ButtonSignIn)
+    ButtonSignIn.y = signInGroup.y + 175
+	SignInGroup:insert(ButtonSignIn)
 
 	-- ButtonForgotPass click handling
 	local function handleForgotPassBtnEvent( event )
@@ -156,8 +156,8 @@ function scene:create( event )
         onEvent = handleForgotPassBtnEvent
     })
 	ButtonForgotPass.x = display.contentCenterX
-    ButtonForgotPass.y = signInGroup.y + 275
-	pageGroup:insert(ButtonForgotPass)
+    ButtonForgotPass.y = ButtonSignIn.y + 75
+	SignInGroup:insert(ButtonForgotPass)
 
 	-- backBtn click handling
 	local function handleButtonBackEvent( event )
@@ -177,10 +177,10 @@ function scene:create( event )
     })
 	ButtonBack.x = display.contentCenterX
 	ButtonBack.y = 550
-	pageGroup:insert(ButtonBack)
+	SignInGroup:insert(ButtonBack)
 
 	-- all objects must be added to group (e.g. self.view)
-	sceneGroup:insert( pageGroup )
+	sceneGroup:insert( SignInGroup )
 	sceneGroup:insert( uNameField )
 	sceneGroup:insert( uPassField )
 end
@@ -229,8 +229,6 @@ function scene:destroy( event )
 
 	-- Called prior to the removal of scene's "view" (sceneGroup)
 	--
-	
-	sceneGroup.remove()
 	-- INSERT code here to cleanup the scene
 	-- e.g. remove display objects, remove touch listeners, save state, etc.
 end

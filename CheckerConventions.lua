@@ -8,20 +8,27 @@ local widget = require "widget"
 local scene = composer.newScene()
 
 function scene:create( event )
+	local sceneGroup = self.view
+	local ConventionsGroup = display.newGroup()
+
 	-- create black background to fill screen
 	local background = display.newRect( display.contentCenterX, display.contentCenterY, display.contentWidth, display.contentHeight )
 	background:setFillColor(0,0,0)
+	ConventionsGroup:insert(background)
 	
 	-- create a black background to fill screen
 	local logo = display.newImageRect( "img/CheckerWorldLogo.png", 95, 65 )
 	logo.x = display.contentCenterX-100
 	logo.y = display.contentCenterY-300
-	
+	ConventionsGroup:insert(logo)
+
 	-- create some text
 	local title = display.newText( "CHECKER WORLD", logo.x+155, logo.y, native.systemFont, 20 )
 	title:setFillColor( .96,.91,.04 )	-- yellow
+	ConventionsGroup:insert(title)
 
 	local header = display.newText( "CHECKER CONVENTIONS", display.contentCenterX, title.y+75, native.systemFontBold, 20 )
+	ConventionsGroup:insert(header)
 
 	local scrollConvView = widget.newScrollView({
 		top = 40,
@@ -34,20 +41,27 @@ function scene:create( event )
 		horizontalScrollDisabled = true,
 		listener = scrollListener
 	})
+	ConventionsGroup:insert(scrollConvView)
 
 	-- begin button styling
 	local cLogo = display.newImageRect("img/CheckerLogo.png",display.contentWidth-60,100)
 	cLogo.x = display.contentCenterX
 	cLogo.y = header.y+97
+	ConventionsGroup:insert(cLogo)
+
 	local border = display.newRect(display.contentCenterX,display.contentCenterY-40, display.contentWidth-20,340,14 )
 	border.strokeWidth = 2
 	border:setFillColor( 0,0,0,.6 )
 	border:setStrokeColor(.96,.91,.04)
+	ConventionsGroup:insert(border)
+
 	local borderWhite = display.newRect(display.contentCenterX
 	,display.contentCenterY-40, display.contentWidth-30,330,14 )
 	borderWhite.strokeWidth = 2
 	borderWhite:setFillColor( 0,0,0,0 )
 	borderWhite:setStrokeColor(1,1,1)
+	ConventionsGroup:insert(borderWhite)
+
 	local usOptions = {
 		text = "August 3-6\nKalamazoo, Michigan ", 
 		x = display.contentCenterX, 
@@ -58,6 +72,7 @@ function scene:create( event )
 		fontSize = 18 ,		
 		align = "center"
 	}
+
 	local usOptions2 = {
 		text = "2022 Checker Car\nClub Convention ", 
 		x = display.contentCenterX, 
@@ -68,7 +83,10 @@ function scene:create( event )
 		fontSize = 18 ,		
 		align = "center"
 	}
+
 	local btnBorder = display.newRect(display.contentCenterX,usOptions2.y+20, display.contentWidth-100,58,14 )
+	ConventionsGroup:insert(btnBorder)
+
 	local openRegBtn = widget.newButton({
 		width = display.contentWidth-106,
 		height = 50,
@@ -81,7 +99,11 @@ function scene:create( event )
 		overFile = "img/bannerBTN.png",
 		onEvent = handleregisterBtnEvent
 	})
+	ConventionsGroup:insert(openRegBtn)
+
 	local btnBorder2 = display.newRect(display.contentCenterX,usOptions2.y+100, display.contentWidth-100,58,14 )
+	ConventionsGroup:insert(btnBorder2)
+
 	local hotelRegBtn = widget.newButton({
 		width = display.contentWidth-106,
 		height = 50,
@@ -94,9 +116,14 @@ function scene:create( event )
 		overFile = "img/bannerBTN.png",
 		onEvent = handleregisterBtnEvent
 	})
+	ConventionsGroup:insert(hotelRegBtn)
 	
 	local upcoming = display.newText(usOptions)
+	ConventionsGroup:insert(upcoming)
+
 	local upcoming2 = display.newText(usOptions2)
+	ConventionsGroup:insert(upcoming2)
+
 	upcoming:setFillColor(1,1,1)
 	upcoming2:setFillColor(.96,.91,.04)
 	openRegBtn.x = display.contentCenterX
@@ -115,15 +142,21 @@ function scene:create( event )
 	local cLogo2 = display.newImageRect("img/CheckerLogo.png",display.contentWidth-60,100)
 	cLogo2.x = display.contentCenterX
 	cLogo2.y = hotelRegBtn.y+450
+	ConventionsGroup:insert(cLogo2)
+
 	local priorBorder = display.newRect(display.contentCenterX,display.contentCenterY+display.contentHeight/2+275, display.contentWidth-20,display.contentHeight*1.5,14 )
 	priorBorder.strokeWidth = 2
 	priorBorder:setFillColor( 0,0,0,.6 )
 	priorBorder:setStrokeColor(.96,.91,.04)
+	ConventionsGroup:insert(priorBorder)
+
 	local priorBorderWhite = display.newRect(display.contentCenterX
 	,display.contentCenterY+display.contentHeight/2+275, display.contentWidth-30,display.contentHeight*1.5-10,14 )
 	priorBorderWhite.strokeWidth = 2
 	priorBorderWhite:setFillColor( 0,0,0,0 )
 	priorBorderWhite:setStrokeColor(1,1,1)
+	ConventionsGroup:insert(priorBorderWhite)
+
 	local priorOptions = {
 		text = "Prior Years - 2020 was \na year we want to forget.\nNo Convention",
 		x = display.contentCenterX,
@@ -135,6 +168,7 @@ function scene:create( event )
 	}
 	local prior = display.newText(priorOptions)
 	prior:setFillColor(1,1,1)
+	ConventionsGroup:insert(prior)
 	-- end
 	
 	local p2021Btn = widget.newButton({
@@ -145,6 +179,8 @@ function scene:create( event )
 	})
 	p2021Btn.x = display.contentCenterX
 	p2021Btn.y = prior.y+75
+	ConventionsGroup:insert(p2021Btn)
+
 	local p2019Btn = widget.newButton({
 		width = display.contentWidth-30,
 		height = 50,
@@ -155,6 +191,8 @@ function scene:create( event )
 	})
 	p2019Btn.x = display.contentCenterX
 	p2019Btn.y = p2021Btn.y+50
+	ConventionsGroup:insert(p2019Btn)
+
 	local p2018Btn = widget.newButton({
 		width = display.contentWidth-30,
 		label = "2018 - Elkhart,IN*",
@@ -164,6 +202,8 @@ function scene:create( event )
 	})
 	p2018Btn.x = display.contentCenterX
 	p2018Btn.y = p2019Btn.y+50
+	ConventionsGroup:insert(p2018Btn)
+
 	local p2017Btn = widget.newButton({
 		label = "2017 - Kalamazoo, MI",
 		labelColor = { default={.96,.91,.04}, over={.96,.91,.04} },
@@ -172,6 +212,8 @@ function scene:create( event )
 	})
 	p2017Btn.x = display.contentCenterX
 	p2017Btn.y = p2018Btn.y+50
+	ConventionsGroup:insert(p2017Btn)
+
 	local p2016Btn = widget.newButton({
 		label = "2016 - Hershey, PA",
 		labelColor = { default={.96,.91,.04}, over={.96,.91,.04} },
@@ -180,6 +222,8 @@ function scene:create( event )
 	})
 	p2016Btn.x = display.contentCenterX
 	p2016Btn.y = p2017Btn.y+50
+	ConventionsGroup:insert(p2016Btn)
+
 	local p2015Btn = widget.newButton({
 		label = "2015 - South Bend, IN",
 		labelColor = { default={.96,.91,.04}, over={.96,.91,.04} },
@@ -188,6 +232,8 @@ function scene:create( event )
 	})
 	p2015Btn.x = display.contentCenterX
 	p2015Btn.y = p2016Btn.y+50
+	ConventionsGroup:insert(p2015Btn)
+
 	local p2014Btn = widget.newButton({
 		label = "2014 - New York City, NY",
 		labelColor = { default={.96,.91,.04}, over={.96,.91,.04} },
@@ -196,6 +242,7 @@ function scene:create( event )
 	})
 	p2014Btn.x = display.contentCenterX
 	p2014Btn.y = p2015Btn.y+50
+	ConventionsGroup:insert(p2014Btn)
 
 	local p2013Btn = widget.newButton({
 		label = "2013 - Atlanta, GA",
@@ -205,6 +252,8 @@ function scene:create( event )
 	})
 	p2013Btn.x = display.contentCenterX
 	p2013Btn.y = p2014Btn.y+50
+	ConventionsGroup:insert(p2013Btn)
+
 	local p2012Btn = widget.newButton({
 		label = "2012 - Dayton, OH",
 		labelColor = { default={.96,.91,.04}, over={.96,.91,.04} },
@@ -213,6 +262,8 @@ function scene:create( event )
 	})
 	p2012Btn.x = display.contentCenterX
 	p2012Btn.y = p2013Btn.y+50
+	ConventionsGroup:insert(p2012Btn)
+
 	local p2011Btn = widget.newButton({
 		label = "2011 - Springfield, IL",
 		labelColor = { default={.96,.91,.04}, over={.96,.91,.04} },
@@ -221,6 +272,8 @@ function scene:create( event )
 	})
 	p2011Btn.x = display.contentCenterX
 	p2011Btn.y = p2012Btn.y+50
+	ConventionsGroup:insert(p2011Btn)
+
 	local p2010Btn = widget.newButton({
 		label = "2010 and earlier...",
 		labelColor = { default={.96,.91,.04}, over={.96,.91,.04} },
@@ -229,6 +282,7 @@ function scene:create( event )
 	})
 	p2010Btn.x = display.contentCenterX
 	p2010Btn.y = p2011Btn.y+50
+	ConventionsGroup:insert(p2010Btn)
 	
 	-- insert elements into the Scroll view
 	scrollConvView:insert(cLogo)
@@ -255,6 +309,8 @@ function scene:create( event )
 	scrollConvView:insert(p2012Btn)	
 	scrollConvView:insert(p2011Btn)	
 	scrollConvView:insert(p2010Btn)
+
+	sceneGroup:insert(ConventionsGroup)
 end
 
 function scene:show( event )

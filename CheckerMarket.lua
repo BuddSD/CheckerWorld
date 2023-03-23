@@ -9,6 +9,9 @@ local widget = require "widget"
 local scene = composer.newScene()
 
 function scene:create( event )
+	local sceneGroup = self.view
+	local MarketGroup = display.newGroup()
+
 	-- Functions to control the buttons
 	local function sellBtnEvent ( event )
 		composer.gotoScene( "CheckerMarket")
@@ -26,19 +29,25 @@ function scene:create( event )
 	-- create black background to fill screen
 	local background = display.newRect( display.contentCenterX, display.contentCenterY, display.contentWidth, display.contentHeight )
 	background:setFillColor(0,0,0)
+	MarketGroup:insert(background)
 	
 	local logo = display.newImageRect( "img/CheckerWorldLogo.png", 95, 65 )
 	logo.x = display.contentCenterX-100
 	logo.y = display.contentCenterY-300
+	MarketGroup:insert(logo)
 	
 	-- create some text
 	local title = display.newText( "CHECKER WORLD", logo.x+155, logo.y, native.systemFontBold, 20 )
 	title:setFillColor( .96,.91,.04 )	-- yellow
-	
+	MarketGroup:insert(title)
+
 	local header = display.newText( "CHECKER MARKET", display.contentCenterX, title.y+75, native.systemFont, 20 )
+	MarketGroup:insert(header)
 	
 	-- Sell button Begin
 	local cLogo1 = display.newImageRect("img/CheckerLogo.png",300,130)
+	MarketGroup:insert(cLogo1)
+
 	local sellBorder = display.newRect(display.contentCenterX,40, 300,200,14 )
 	cLogo1.x = display.contentCenterX
 	cLogo1.y = header.y+150
@@ -47,6 +56,8 @@ function scene:create( event )
 	sellBorder.strokeWidth = 2
 	sellBorder:setFillColor(0,0,0,.6)
 	sellBorder:setStrokeColor( .96,.91,.04)
+	MarketGroup:insert(sellBorder)
+
 	local sellBtn = widget.newButton({
 		width = display.contentWidth-30,
 		height = 160,
@@ -54,14 +65,16 @@ function scene:create( event )
 		labelColor = {default={ 1,1,1 }, over={ .96,.91,.04 } },
 		fontSize = 30,
 		onEvent = sellBtnEvent
-	})
-	
+	})	
 	sellBtn.x = display.contentCenterX
 	sellBtn.y = header.y+150
+	MarketGroup:insert(sellBtn)
 	-- end
 	
 	-- Buy button Begin
 	local cLogo2 = display.newImageRect("img/CheckerLogo.png",300,130)	
+	MarketGroup:insert(cLogo2)
+
 	local buyBorder = display.newRect(display.contentCenterX,40,300,200,14 )
 	cLogo2.x = display.contentCenterX
 	cLogo2.y = sellBorder.y+200
@@ -70,6 +83,8 @@ function scene:create( event )
 	buyBorder.strokeWidth = 2
 	buyBorder:setFillColor(0,0,0,.6)
 	buyBorder:setStrokeColor(.96,.91,.04)
+	MarketGroup:insert(buyBorder)
+
 	local buyBtn = widget.newButton({
 		width = display.contentWidth-30,
 		height = 160,
@@ -81,8 +96,10 @@ function scene:create( event )
 	
 	buyBtn.x = display.contentCenterX
 	buyBtn.y = sellBorder.y+200
+	MarketGroup:insert(buyBtn)
 	--end
-	
+
+	sceneGroup:insert(MarketGroup)	
 end
 
 function scene:show( event )

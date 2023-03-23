@@ -9,19 +9,26 @@ local widget = require "widget"
 local scene = composer.newScene()
 
 function scene:create( event )
+	local sceneGroup = self.view
+	local DocsGroup = display.newGroup()
+
 	-- create black background to fill screen
 	local background = display.newRect( display.contentCenterX, display.contentCenterY, display.contentWidth, display.contentHeight )
 	background:setFillColor(0,0,0)
+	DocsGroup:insert(background)
 	
 	local logo = display.newImageRect( "img/CheckerWorldLogo.png", 95, 65 )
 	logo.x = display.contentCenterX-100
 	logo.y = display.contentCenterY-300
+	DocsGroup:insert(logo)
 	
 	-- create some text
 	local title = display.newText( "CHECKER WORLD", logo.x+155, logo.y, native.systemFontBold, 20 )
 	title:setFillColor( .96,.91,.04 )	-- yellow
+	DocsGroup:insert(title)
 
 	local header = display.newText( "CHECKER DOCUMENTS", display.contentCenterX, title.y+75, native.systemFont, 20 )
+	DocsGroup:insert(header)
 
 	local scrollDocsView = widget.newScrollView({
 		top = 40,
@@ -33,11 +40,12 @@ function scene:create( event )
 		scrollHeight = 10,
 		listener = scrollListener
 	})
-	scrollDocsView:insert( background )
+	DocsGroup:insert(scrollDocsView)
 
 	-- Documents intro text
 	local intro = display.newText("Welcome to the Checker Document Library. Note that certain categories of documents are for CCCoA members only. We provide the most comprehensive collection of instantly available information about Checker vehicles and most of the technical materials that pertain to them. You will also find copies of every relevant article published in our newsletter since 1984. If you don't find what you are looking for, please feel free to send us a note via the Contact page of this web site. If you have a document that you'd like to contribute, please contact us via the Contact form. If you are looking for information about the history of Checker Motors, please visit the History page of this web site. ", display.contentCenterX, header.y+250, display.contentWidth-20,display.contentHeight,native.systemFont, 18 )
 	intro:setFillColor(1,1,1,1)
+	DocsGroup:insert(intro)
 	scrollDocsView:insert(intro)
 	-- END intro
 	-- BEGIN member access items
@@ -45,10 +53,15 @@ function scene:create( event )
 	local priceListImg = display.newImageRect("img/priceListthumb.png", 100, 100)
 	priceListImg.x = display.contentCenterX
 	priceListImg.y = intro.y+200
+	DocsGroup:insert(priceListImg)
 	scrollDocsView:insert(priceListImg)
+
 	local priceListLabel = display.newText("Price Lists", display.contentCenterX,intro.y+75, 100,100, 16 )
+	DocsGroup:insert(priceListLabel)
 	scrollDocsView:insert(priceListLabel)
 	-- END member access items
+
+	sceneGroup:insert(DocsGroup)
 end
 
 function scene:show( event )

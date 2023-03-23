@@ -3,9 +3,20 @@
 -- main.lua
 --
 -----------------------------------------------------------------------------------------
+oniOS = ( system.getInfo("platformName") == "iPhone OS")
+onAndroid = (system.getInfo("platformName") == "Android")
+onOSX = (system.getInfo("platformName") == "Mac OS X")
+onWin = (system.getInfo("platformName") == "Win")
 
+require "ssk2.loadSSK"
+ssk.init()
+
+io.output():setvbuf("no")
 -- show default status bar (iOS)
 display.setStatusBar( display.HiddenStatusBar )
+system.activate("multitouch")
+
+numImages = 1000
 
 -- include Corona's "widget" library
 local widget = require "widget"
@@ -15,15 +26,11 @@ local sqlite = require( "sqlite3" )
 path = system.pathForFile( "CheckerWorldUsers.db", system.DocumentsDirectory )
 db = sqlite.open(path)
 
-function checkCredentials(_name, _pass)
-	-- copy the db locally
-	local users = {}
-	for row in db:nrows( "SELECT * FROM Members" ) do
-		print("Row: ", row.UserID)
-		users[#users+1] = {checkName = row.UserName, checkPass = row.uPass}
-	end
-	print(users)
-end
+-- credCheckName & credCheckPass need to be check against the entries in the lua table below (userCheck) this table will be populated by iterating through the database table.
+-- Database : CheckerWorldUsers.db
+-- Table	: Members
+-- Column 1	: UserName
+-- Column 2 : uPass
 
 
 function textListener(event)
@@ -44,13 +51,13 @@ function textListener(event)
 	end
 end
 
-local labelColors = {
-	default = { .96,.91,.04,1 },
-	over = { 0, 0, 0, 1 }
+labelColors = {
+	default = { .96,.91,.04,1 },			-- Yellow
+	over = { 0, 0, 0, 1 }					-- Black
 }
 
 -- event listeners for tab buttons:
-function CarView( event )
+function ClubView( event )
 	if ( event.phase == "ended" ) then
 		composer.gotoScene( "CarHome" )
 	else
@@ -58,7 +65,8 @@ function CarView( event )
 	end
 	return true
 end
-function ClubView( event )
+
+function CarView( event )
 	if ( event.phase == "ended" ) then
 		composer.gotoScene( "ClubHome" )
 	else
@@ -67,8 +75,8 @@ function ClubView( event )
 	return true
 end
 -- initial state/page the app will start on
-function onHomeView( event )
-	composer.gotoScene( "home" )
+function onStartView( event )
+	composer.gotoScene( "start" )
 end
 -- create a tabBar widget with two buttons at the bottom of the screen
 
@@ -84,7 +92,7 @@ local tabButtons = {
         size = 22,
         labelColor = labelColors,
 		labelYOffset = -35,
-		onPress = CarViewEvent
+		onPress = CarView
     },
  	{
 		width = display.contentWidth/2,
@@ -97,7 +105,7 @@ local tabButtons = {
         size = 22,
         labelColor = labelColors,
 		labelYOffset = -35,
-		onPress = ClubViewEvent
+		onPress = ClubView
     }
  }
 
@@ -106,6 +114,8 @@ local tabButtons = {
  local tabBar = widget.newTabBar
  {
 	left = 0,
+	right = 0,
+	bottom = 0,
 	top = display.contentHeight + 40,
 	height = 80,
 	width = display.contentWidth,
@@ -113,4 +123,4 @@ local tabButtons = {
  }
 composer.setVariable("savedTabBar", tabBar)
 tabBar.isVisible = false
-onHomeView()	-- invoke first tab button's onPress event manually
+onStartView()	-- invoke first tab button's onPress event manually

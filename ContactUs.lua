@@ -9,22 +9,29 @@ local widget = require "widget"
 local scene = composer.newScene()
 
 function scene:create( event )
+	local sceneGroup = self.view
+	local ContactGroup = display.newGroup()
+
 	-- create black background to fill screen
 	local background = display.newRect( display.contentCenterX, display.contentCenterY, display.contentWidth, display.contentHeight+75 )
 	background:setFillColor(0,0,0)
+	ContactGroup:insert(background)
 	
 	-- create a black background to fill screen
 	local logo = display.newImageRect( "img/CheckerWorldLogo.png", 95, 65 )
 	logo.x = display.contentCenterX-100
 	logo.y = display.contentCenterY-300
+	ContactGroup:insert(logo)
 	
 	-- create some text
 	local title = display.newText( "CHECKER WORLD", logo.x+155, logo.y, native.systemFont, 22 )
 	title:setFillColor( .96,.91,.04 )	-- yellow
+	ContactGroup:insert(title)
 
 	local header = display.newText( "CONTACT US", display.contentCenterX, title.y+75, native.systemFont, 20 )
+	ContactGroup:insert(header)
 
-	local scrollDocsView = widget.newScrollView({
+	local scrollContactView = widget.newScrollView({
 		top = 40,
 		left = 10,
 		width = display.contentWidth-20,
@@ -34,31 +41,51 @@ function scene:create( event )
 		scrollHeight = 1,
 		listener = scrollListener
 	})
-	scrollDocsView:insert( background )
+	ContactGroup:insert(scrollContactView)
 
 	-- Documents intro text
 	local intro = display.newText("Please click the officers name or title below to be put in contact with these individuals. Mention the name of the person you want to reach in the note. ", display.contentCenterX, header.y+250, display.contentWidth-35,display.contentHeight,native.systemFont, 18 )
 	intro:setFillColor(1,1,1,1)
-	scrollDocsView:insert(intro)
+	scrollContactView:insert(intro)
+	ContactGroup:insert(intro)
 	-- END intro
 	local president = display.newText("President: \nPaul Worth\npresident@checkercarclub.org\n\n",display.contentCenterX-25, intro.y-30, native.systemFont, 18)
+	ContactGroup:insert(president)
+
 	local vp = display.newText("Vice President: \nOpen\n\n",75, president.y+75, native.systemFont, 18)
+	ContactGroup:insert(vp)
+
 	local secEditor = display.newText("Secretary & Journal Editor: \nJohn Weinhoeft\nsecretary@checkercarclub.org\n\n",display.contentCenterX-25, vp.y+75, native.systemFont, 18)
+	ContactGroup:insert(secEditor)
+
 	local treasurer = display.newText("Treasurer: \nAnthony (Tony) Mattern\ntreasurer@checkercarclub.org\n\n",display.contentCenterX-25, secEditor.y+75, native.systemFont, 18)
+	ContactGroup:insert(treasurer)
+
 	local memberChairs = display.newText("Membership Co-Chairs: \nBecky Carlson & Anthony Mattern\nmembership@checkercarclub.org\n\n",display.contentCenterX-10, treasurer.y+75, native.systemFont, 18)
+	ContactGroup:insert(memberChairs)
+
 	local directors = display.newText("Directors:\nEd Ball\nBecky Carlson\nBrad Lohsen\nPhillip Arnold\nEdward Fox\n\n",75, memberChairs.y+110, native.systemFont, 18)
+	ContactGroup:insert(directors)
+
 	local webmaster = display.newText("Webmaster: \nOpen Office (Are you interested?)\nwebmaster@checkercarclub.org\n\n",display.contentCenterX-10, directors.y+110, native.systemFont, 18)
+	ContactGroup:insert(webmaster)
 	local prevPres = display.newText("Previous President: \nGary Lohsen\n\n",display.contentCenterX-60, webmaster.y+75, native.systemFont, 18)
+	ContactGroup:insert(prevPres)
+
 	local convChair = display.newText("Convention Chair: \nJames P Garrison",display.contentCenterX-65, prevPres.y+50, native.systemFont, 18)
-	scrollDocsView:insert(president)
-	scrollDocsView:insert(vp)
-	scrollDocsView:insert(secEditor)
-	scrollDocsView:insert(treasurer)
-	scrollDocsView:insert(memberChairs)
-	scrollDocsView:insert(directors)
-	scrollDocsView:insert(webmaster)
-	scrollDocsView:insert(prevPres)
-	scrollDocsView:insert(convChair)
+	ContactGroup:insert(convChair)
+
+	scrollContactView:insert(president)
+	scrollContactView:insert(vp)
+	scrollContactView:insert(secEditor)
+	scrollContactView:insert(treasurer)
+	scrollContactView:insert(memberChairs)
+	scrollContactView:insert(directors)
+	scrollContactView:insert(webmaster)
+	scrollContactView:insert(prevPres)
+	scrollContactView:insert(convChair)
+
+	sceneGroup:insert(ContactGroup)
 end
 
 function scene:show( event )

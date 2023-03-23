@@ -9,26 +9,52 @@ local widget = require "widget"
 local scene = composer.newScene()
 
 function scene:create( event )
+	local sceneGroup = self.view
+	local LinksGroup = display.newGroup()
+
 	-- create black background to fill screen
 	local background = display.newRect( display.contentCenterX, display.contentCenterY, display.contentWidth, display.contentHeight )
 	background:setFillColor(0,0,0)
+	LinksGroup:insert(background)
 	
 	-- create a black background to fill screen
 	local logo = display.newImageRect( "img/CheckerWorldLogo.png", 95, 65 )
 	logo.x = display.contentCenterX-100
 	logo.y = display.contentCenterY-300
+	LinksGroup:insert(logo)
 	
 	-- create some text
 	local title = display.newText( "CHECKER WORLD", logo.x+155, logo.y, native.systemFont, 20 )
 	title:setFillColor( .96,.91,.04 )	-- yellow
+	LinksGroup:insert(title)
 
 	local header = display.newText( "CHECKER WEB LINKS", display.contentCenterX, title.y+75, native.systemFontBold, 20 )
+	LinksGroup:insert(header)
+
+	local scrollLinksView = widget.newScrollView({
+		top = 40,
+		left = 0,
+		width = display.contentWidth-20,
+		height = display.contentHeight,
+		scrollWidth = display.contentWidth,
+		backgroundColor = { 0,0,0 },
+		scrollHeight = 10,
+		horizontalScrollDisabled = true,
+		listener = scrollListener
+	})
+	LinksGroup:insert(scrollLinksView)
 	-- BEGIN button creation
 	-- left side
 	local cLogo1 = display.newImageRect("img/CheckerLogo.png",display.contentWidth/2-10,60)
 	cLogo1.x = 80
 	cLogo1.y = header.y+125
+	LinksGroup:insert(cLogo1)
+	scrollLinksView:insert(cLogo1)
+
 	local rentalsBorder = display.newRect(80,header.y+125, display.contentWidth/2-2,display.contentHeight/3-7,14 )
+	LinksGroup:insert(rentalsBorder)
+	scrollLinksView:insert(rentalsBorder)
+
 	local rentalsBtn = widget.newButton({
 		width = display.contentWidth/2,
 		height = 50,
@@ -44,11 +70,19 @@ function scene:create( event )
 	rentalsBorder.strokeWidth = 2
 	rentalsBorder:setFillColor( 0,0,0,.6 )
 	rentalsBorder:setStrokeColor( .96,.91,.04 )
+	LinksGroup:insert(rentalsBtn)
+	scrollLinksView:insert(rentalsBtn)
 
 	local cLogo2 = display.newImageRect("img/CheckerLogo.png",display.contentWidth/2-10,60)
 	cLogo2.x = 80
 	cLogo2.y = rentalsBtn.y+display.contentHeight/3-7
+	LinksGroup:insert(cLogo2)
+	scrollLinksView:insert(cLogo2)
+
 	local modelsBorder = display.newRect(80,rentalsBtn.y+display.contentHeight/3-7, display.contentWidth/2-2,display.contentHeight/3-7,14 )
+	LinksGroup:insert(modelsBorder)
+	scrollLinksView:insert(modelsBorder)
+
 	local modelsBtn = widget.newButton({
 		width = display.contentWidth/2,
 		height = 50,
@@ -64,11 +98,19 @@ function scene:create( event )
 	modelsBorder.strokeWidth = 2
 	modelsBorder:setFillColor( 0,0,0,.6 )
 	modelsBorder:setStrokeColor( .96,.91,.04 )
+	LinksGroup:insert(modelsBtn)
+	scrollLinksView:insert(modelsBtn)
 
 	local cLogo3 = display.newImageRect("img/CheckerLogo.png",display.contentWidth/2-10,60)
 	cLogo3.x = 80
 	cLogo3.y = modelsBtn.y+display.contentHeight/3-7
+	LinksGroup:insert(cLogo3)
+	scrollLinksView:insert(cLogo3)
+
 	local manualsBorder = display.newRect(80,modelsBtn.y+display.contentHeight/3-7, display.contentWidth/2-2,display.contentHeight/3-7,14 )
+	LinksGroup:insert(manualsBorder)
+	scrollLinksView:insert(manualsBorder)
+
 	local manualsBtn = widget.newButton({
 		width = display.contentWidth/2,
 		height = 50,
@@ -84,12 +126,20 @@ function scene:create( event )
 	manualsBorder.strokeWidth = 2
 	manualsBorder:setFillColor( 0,0,0,.6 )
 	manualsBorder:setStrokeColor( .96,.91,.04 )	
+	LinksGroup:insert(manualsBtn)
+	scrollLinksView:insert(manualsBtn)
 	-- end left side
 	-- right side
 	local cLogo4 = display.newImageRect("img/CheckerLogo.png",display.contentWidth/2-10,60)
 	cLogo4.x = display.contentWidth-80
 	cLogo4.y = header.y+125
+	LinksGroup:insert(cLogo4)
+	scrollLinksView:insert(cLogo4)
+	
 	local repairsBorder = display.newRect(display.contentWidth-80,header.y+125, display.contentWidth/2-2,display.contentHeight/3-7,14 )
+	LinksGroup:insert(repairsBorder)
+	scrollLinksView:insert(repairsBorder)
+
 	local repairsBtn = widget.newButton({
 		width = display.contentWidth/2,
 		height = 50,
@@ -105,11 +155,19 @@ function scene:create( event )
 	repairsBorder.strokeWidth = 2
 	repairsBorder:setFillColor( 0,0,0,.6 )
 	repairsBorder:setStrokeColor( .96,.91,.04 )
+	LinksGroup:insert(repairsBtn)
+	scrollLinksView:insert(repairsBtn)
 
 	local cLogo5 = display.newImageRect("img/CheckerLogo.png",display.contentWidth/2-10,60)
 	cLogo5.x = display.contentWidth-80
 	cLogo5.y = repairsBtn.y+display.contentHeight/3-7
+	LinksGroup:insert(cLogo5)
+	scrollLinksView:insert(cLogo5)
+
 	local insBorder = display.newRect(display.contentWidth-80,repairsBtn.y+display.contentHeight/3-7, display.contentWidth/2-2,display.contentHeight/3-7,14 )
+	LinksGroup:insert(insBorder)
+	scrollLinksView:insert(insBorder)
+
 	local insBtn = widget.newButton({
 		width = display.contentWidth/2,
 		height = 50,
@@ -125,11 +183,19 @@ function scene:create( event )
 	insBorder.strokeWidth = 2
 	insBorder:setFillColor( 0,0,0,.6 )
 	insBorder:setStrokeColor( .96,.91,.04 )
+	LinksGroup:insert(insBtn)
+	scrollLinksView:insert(insBtn)
 
 	local cLogo6 = display.newImageRect("img/CheckerLogo.png",display.contentWidth/2-10,60)
 	cLogo6.x = display.contentWidth-80
 	cLogo6.y = insBtn.y+display.contentHeight/3-7
+	LinksGroup:insert(cLogo6)
+	scrollLinksView:insert(cLogo6)
+
 	local pandpBorder = display.newRect(display.contentWidth-80,insBtn.y+display.contentHeight/3-7, display.contentWidth/2-2,display.contentHeight/3-7,14 )
+	LinksGroup:insert(pandpBorder)
+	scrollLinksView:insert(pandpBorder)
+
 	local pandpBtn = widget.newButton({
 		width = display.contentWidth/2,
 		height = 50,
@@ -145,8 +211,12 @@ function scene:create( event )
 	pandpBorder.strokeWidth = 2
 	pandpBorder:setFillColor( 0,0,0,.6 )
 	pandpBorder:setStrokeColor( .96,.91,.04 )
+	LinksGroup:insert(pandpBtn)
+	scrollLinksView:insert(pandpBtn)
+
 	-- end right side
 	-- END 
+	sceneGroup:insert(LinksGroup)
 end
 
 function scene:show( event )

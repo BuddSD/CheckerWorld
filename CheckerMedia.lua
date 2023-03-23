@@ -9,24 +9,30 @@ local widget = require "widget"
 local scene = composer.newScene()
 
 function scene:create( event )
-	
+	local sceneGroup = self.view
+	local MediaGroup = display.newGroup()
+
 	-- create black background to fill screen
 	local background = display.newRect( display.contentCenterX, display.contentCenterY, display.contentWidth, display.contentHeight+60 )
 	background:setFillColor(0,0,0)
+	MediaGroup:insert(background)
 	
 	-- create a black background to fill screen
 	local logo = display.newImageRect( "img/CheckerWorldLogo.png", 95, 65 )
 	logo.x = display.contentCenterX-100
 	logo.y = display.contentCenterY-300
-	
+	MediaGroup:insert(logo)
+
 	-- create some text
 	local title = display.newText( "CHECKER WORLD", logo.x+155, logo.y, native.systemFontBold, 20 )
 	title:setFillColor( .96,.91,.04 )	-- yellow
+	MediaGroup:insert(title)
 
 	local header = display.newText( "CHECKERS IN MOVIES, \n TV SHOWS, & VIDEOS", display.contentCenterX, title.y+75, native.systemFont, 20 )
 	title:setFillColor( .96,.91,.04 )	-- yellow
+	MediaGroup:insert(header)
 
-	local scrollDocsView = widget.newScrollView({
+	local scrollMediaView = widget.newScrollView({
 		top = 40,
 		left = 10,
 		width = display.contentWidth-20,
@@ -37,18 +43,21 @@ function scene:create( event )
 		horizontalScrollDisabled = true,
 		listener = scrollListener
 	})
-	scrollDocsView:insert( background )
+	MediaGroup:insert(scrollMediaView)
 
 	-- Documents intro text
 	local intro = display.newText("Checker Cars and Taxis have been used in Movies and TV Shows since 1922. Nearly every model(from H to A-11) has shown up in nearly 1000 productions in the past 94 years. With the advent of the internet, numerous videos featuring Checkers can be found on sites like YouTube and Vimeo. Using data gathered from the web sites imdb.com and icmdb.com we list her the most important subset of the ever-growing film and videogrphy of Checker Cars.", display.contentCenterX, header.y+250, display.contentWidth-15,display.contentHeight,native.systemFont, 18 )
 	intro:setFillColor(1,1,1,1)
-	scrollDocsView:insert(intro)
+	MediaGroup:insert(intro)
+	scrollMediaView:insert(intro)
 	-- END intro
 
 	-- media buttons for the Checkers
 
 	-- BEGIN Early Model Checkers Btn
 	local cLogo1 = display.newImageRect("img/CheckerLogo.png",250,75)
+	MediaGroup:insert(cLogo1)
+
 	local emBorder = display.newRect(display.contentCenterX-10,intro.y+125, display.contentWidth-40,100,14 )
 	cLogo1.x = display.contentCenterX-10
 	cLogo1.y = intro.y+125
@@ -57,6 +66,8 @@ function scene:create( event )
 	emBorder.strokeWidth = 2
 	emBorder:setFillColor(0,0,0,.6)
 	emBorder:setStrokeColor(.96,.91,.04)
+	MediaGroup:insert(emBorder)
+
 	local emBtn = widget.newButton({
 		width = display.contentWidth-30,
 		height = 100,
@@ -67,12 +78,16 @@ function scene:create( event )
 	})
 	emBtn.x = display.contentCenterX-10
 	emBtn.y = intro.y+125
-	scrollDocsView:insert(cLogo1)
-	scrollDocsView:insert(emBorder)
-	scrollDocsView:insert(emBtn)
+	MediaGroup:insert(emBtn)
+	
+	scrollMediaView:insert(cLogo1)
+	scrollMediaView:insert(emBorder)
+	scrollMediaView:insert(emBtn)
 	-- END
 	-- BEGIN Late Model Checkers Btn
 	local cLogo2 = display.newImageRect("img/CheckerLogo.png",250,75)
+	MediaGroup:insert(cLogo2)
+	
 	local lmBorder = display.newRect(display.contentCenterX-10,emBorder.y+125, display.contentWidth-40,100,14 )
 	cLogo2.x = display.contentCenterX-10
 	cLogo2.y = emBorder.y+125
@@ -81,6 +96,8 @@ function scene:create( event )
 	lmBorder.strokeWidth = 2
 	lmBorder:setFillColor(0,0,0,.6)
 	lmBorder:setStrokeColor(.96,.91,.04)
+	MediaGroup:insert(lmBorder)
+
 	local lmBtn = widget.newButton({
 		width = display.contentWidth-30,
 		height = 100,
@@ -91,12 +108,16 @@ function scene:create( event )
 	})
 	lmBtn.x = display.contentCenterX-10
 	lmBtn.y = emBorder.y+125
-	scrollDocsView:insert(cLogo2)
-	scrollDocsView:insert(lmBorder)
-	scrollDocsView:insert(lmBtn)
+	MediaGroup:insert(lmBtn)
+
+	scrollMediaView:insert(cLogo2)
+	scrollMediaView:insert(lmBorder)
+	scrollMediaView:insert(lmBtn)
 	-- END
 	-- BEGIN Fashion Shots Btn
 	local cLogo3 = display.newImageRect("img/CheckerLogo.png",250,75)
+	MediaGroup:insert(cLogo3)
+
 	local vBorder = display.newRect(display.contentCenterX-10,lmBorder.y+125, display.contentWidth-40,100,14 )
 	cLogo3.x = display.contentCenterX-10
 	cLogo3.y = lmBorder.y+125
@@ -105,6 +126,8 @@ function scene:create( event )
 	vBorder.strokeWidth = 2
 	vBorder:setFillColor(0,0,0,.6)
 	vBorder:setStrokeColor(.96,.91,.04)
+	MediaGroup:insert(vBorder)
+
 	local vBtn = widget.newButton({
 		width = display.contentWidth-30,
 		height = 100,
@@ -115,11 +138,13 @@ function scene:create( event )
 	})
 	vBtn.x = display.contentCenterX-10
 	vBtn.y = lmBorder.y+125
-	scrollDocsView:insert(cLogo3)
-	scrollDocsView:insert(vBorder)
-	scrollDocsView:insert(vBtn)
+	MediaGroup:insert(vBtn)
+
+	scrollMediaView:insert(cLogo3)
+	scrollMediaView:insert(vBorder)
+	scrollMediaView:insert(vBtn)
 	-- END
-	
+	sceneGroup:insert(MediaGroup)
 end
 
 function scene:show( event )

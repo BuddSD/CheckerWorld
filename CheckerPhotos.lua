@@ -6,23 +6,57 @@
 local composer = require "composer" 
 local widget = require "widget"
 local scene = composer.newScene()
+local onScreen = require "onScreen"
+local imgList = table.load("imgList.txt") or {}
+
+print(numImages)
+if( #imgList >= _G.numImages ) then 
+	local y = 0
+	for i = 1, _G.numImages do 
+		local curImage = imgList[i]
+		local pic
+		if( curImage[1] == 1) then
+			pic = display.newRect( picsGroup, centerX, y, 1024/6, 1024/6 )
+			pic.anchorY = 0
+			y = y + 1024/6 + 5
+		else
+			pic = display.newRect( picsGroup, centerX, y, 1024/6, 768/6)
+			pic.anchorY = 0
+			y = y + 768/6 + 5
+		end
+		onScreen.frameFiller( pic, curImage[2], "img/fillW.png", nil, system.TemporaryDirectory, system.ResourceDirectory )
+	end
+	print(imgList[i])
+else
+	print("You did not initialize correctly.")
+	print("Set _G.numImages to 1000 the first time you run this project")
+end
 
 function scene:create( event )
+	local sceneGroup = self.view
+	local picsGroup = display.newGroup()
+
 	-- create black background to fill screen
 	local background = display.newRect( display.contentCenterX, display.contentCenterY, display.contentWidth, display.contentHeight )
 	background:setFillColor(0,0,0)
+	picsGroup:insert(background)
 	
 	-- create a black background to fill screen
 	local logo = display.newImageRect( "img/CheckerWorldLogo.png", 95, 65 )
 	logo.x = display.contentCenterX-100
 	logo.y = display.contentCenterY-300
+	picsGroup:insert(logo)
 	
 	-- create some text
 	local title = display.newText( "CHECKER WORLD", logo.x+155, logo.y, native.systemFontBold, 20 )
 	title:setFillColor( 244,233, 0)	-- yellow
+	picsGroup:insert(title)
 	
 	local header = display.newText( "CHECKER PHOTOS", display.contentCenterX, title.y+75, native.systemFont, 20 )
-	title:setFillColor( 244,233, 0)	-- yellow
+	header:setFillColor( 244,233,0,1)	-- yellow
+	picsGroup:insert(header)
+
+	sceneGroup:insert(picsGroup)
 end
 function scene:show( event )
 	local sceneGroup = self.view

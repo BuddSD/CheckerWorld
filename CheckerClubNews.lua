@@ -9,22 +9,26 @@ local scene = composer.newScene()
 
 function scene:create( event )
 	local sceneGroup = self.view
-	local pageGroup = display.newGroup()
+	local ClubNewsGroup = display.newGroup()
 
 	-- create black background to fill screen
 	local background = display.newRect( display.contentCenterX, display.contentCenterY, display.contentWidth, display.contentHeight )
 	background:setFillColor(0,0,0)
+	ClubNewsGroup:insert(background)
 	
 	-- create a black background to fill screen
 	local logo = display.newImageRect( "img/CheckerWorldLogo.png", 95, 65 )
 	logo.x = display.contentCenterX-100
 	logo.y = display.contentCenterY-300
+	ClubNewsGroup:insert(logo)
 	
 	-- create some text
 	local title = display.newText( "CHECKER WORLD", logo.x+155, logo.y, native.systemFont, 22 )
 	title:setFillColor( 2.96,.91,.04 )	-- yellow
+	ClubNewsGroup:insert(title)
 	
 	local header = display.newText( "CHECKER CLUB NEWS", display.contentCenterX, title.y+75, native.systemFontBold, 20 )
+	ClubNewsGroup:insert(header)
 
 	local scrollNewsView = widget.newScrollView({
 		top = 40,
@@ -37,6 +41,7 @@ function scene:create( event )
 		horizontalScrollDisabled = true,
 		listener = scrollListener
 	})
+	ClubNewsGroup:insert(scrollNewsView)
 
 	-- BEGIN post
 	local postDate = display.newText( 
@@ -44,8 +49,11 @@ function scene:create( event )
 		80,
 		header.y+25,
 		native.systemFont,
-		18
+		20
 	)
+	ClubNewsGroup:insert(postDate)
+	scrollNewsView:insert(postDate)
+
 	local postOptions = { 
 		text = "Check out https://www.facebook.com/groups/checkerworld for current news. \n\nWe are unpaid volunteers who have other commitments, we have limited time to work on projects. If you would like to help, email webmaster@checkercarclub.org and let us know. We can always use and extra hand...\n\nChecker owners are not alone.", 
 		x = display.contentCenterX, 
@@ -57,8 +65,14 @@ function scene:create( event )
 	}
 	local postText = display.newText(postOptions)
 	postText:setFillColor( 1,1,1 )
+	ClubNewsGroup:insert(postText)
+	scrollNewsView:insert(postText)
+
 	local divider = display.newRect(display.contentCenterX,postText.y+150 ,display.contentWidth-50,2)
-	divider:setFillColor( 1,1,1 )
+	divider:setFillColor( 244,233,0,1 )
+	ClubNewsGroup:insert(divider)
+	scrollNewsView:insert(divider)
+
 	-- END
 	-- BEGIN post
 	local postDate2 = display.newText( 
@@ -66,8 +80,11 @@ function scene:create( event )
 		85,
 		divider.y+25,
 		native.systemFont,
-		18
+		20
 	)
+	ClubNewsGroup:insert(postDate2)
+	scrollNewsView:insert(postDate2)
+
 	local postOptions2 = { 
 		text = "How are we doing?\n\nAt CCCoA, we are always seeking new ways to provide value to our members. We are currently considering potential new links, and we would love your feedback on if this would be valuable to you.\n\nPlease give us nine minutes or less of your time to tell us what you think. We’ll use the real-world perspective of members like you to determine whether or not we should offer this new site information. If we do move forward, your feedback today will also help us tailor it to meet your needs.\n\nThank you so much for your time and consideration!\n\nA Checker Is Never Alone!. See you at the next convention.", 
 		x = display.contentCenterX, 
@@ -77,10 +94,17 @@ function scene:create( event )
 		fontSize = 18,
 		align = "left"
 	}
+
 	local postText2 = display.newText(postOptions2)
 	postText2:setFillColor( 1,1,1 )
+	ClubNewsGroup:insert(postText2)
+	scrollNewsView:insert(postText2)
+
 	local divider2 = display.newRect(display.contentCenterX,postText2.y+250,display.contentWidth-50,2)
-	divider2:setFillColor( 1,1,1 )
+	divider2:setFillColor( 244,233,0,1 )
+	ClubNewsGroup:insert(divider2)
+	scrollNewsView:insert(divider2)
+	
 	-- END
 	-- BEGIN post
 	local postDate3 = display.newText( 
@@ -88,8 +112,11 @@ function scene:create( event )
 		85,
 		divider2.y+25,
 		native.systemFont,
-		18
+		20
 	)
+	ClubNewsGroup:insert(postDate3)
+	scrollNewsView:insert(postDate3)
+
 	local postOptions3 = { 
 		text = "Due to George Laszlo illness and passing we have been unable to update many of the sections of this website. If you are visiting and want more information please send an email to membership@checkercarclub.org. Include the following:\n\nName\nEmail address\nQuestion that you would like answered", 
 		x = display.contentCenterX, 
@@ -99,20 +126,18 @@ function scene:create( event )
 		fontSize = 18,
 		align = "left"
 	}
+
 	local postText3 = display.newText(postOptions3)
 	postText3:setFillColor( 1,1,1 )
-	local divider3 = display.newRect(display.contentCenterX,postText3.y+150,display.contentWidth-50,2)
-	divider3:setFillColor( 1,1,1 )
-	-- END
-	scrollNewsView:insert(postDate)
-	scrollNewsView:insert(postDate2)
-	scrollNewsView:insert(postDate3)
-	scrollNewsView:insert(postText)
-	scrollNewsView:insert(postText2)
+	ClubNewsGroup:insert(postText3)
 	scrollNewsView:insert(postText3)
-	scrollNewsView:insert(divider)
-	scrollNewsView:insert(divider2)
+
+	local divider3 = display.newRect(display.contentCenterX,postText3.y+150,display.contentWidth-50,2)
+	divider3:setFillColor( 244,233,0,1 )
+	ClubNewsGroup:insert(divider3)
 	scrollNewsView:insert(divider3)
+	-- END
+	sceneGroup:insert(ClubNewsGroup)
 end
 
 function scene:show( event )

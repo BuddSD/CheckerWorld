@@ -9,23 +9,30 @@ local widget = require "widget"
 local scene = composer.newScene()
 
 function scene:create( event )
+	local sceneGroup = self.view
+	local HistoryGroup = display.newGroup()
+
 	-- create black background to fill screen
 	local background = display.newRect( display.contentCenterX, display.contentCenterY+display.contentHeight, display.contentWidth, display.contentHeight)
 	background:setFillColor(0,0,0)
+	HistoryGroup:insert(background)
 	
 	-- create a black background to fill screen
 	local logo = display.newImageRect( "img/CheckerWorldLogo.png", 95, 65 )
 	logo.x = display.contentCenterX-100
 	logo.y = display.contentCenterY-300
+	HistoryGroup:insert(logo)
 	
 	-- create some text
 	local title = display.newText( "CHECKER WORLD", logo.x+155, logo.y, native.systemFont, 22 )
 	title:setFillColor( .96,.91,.04 )	-- yellow
+	HistoryGroup:insert(title)
 
 	local header = display.newText( "CHECKER HISTORY", display.contentCenterX, title.y+75, native.systemFont, 20 )
 	title:setFillColor( .96,.91,.04 )	-- yellow
+	HistoryGroup:insert(header)
 
-	local scrollDocsView = widget.newScrollView({
+	local scrollHistoryView = widget.newScrollView({
 		top = 40,
 		left = 10,
 		width = display.contentWidth-20,
@@ -36,13 +43,16 @@ function scene:create( event )
 		horizontalScrollDisabled = true,
 		listener = scrollListener
 	})
+	HistoryGroup:insert(scrollHistoryView)
 
 	-- Documents intro text
 	local intro = display.newText("Welcome to the Checker World History page, the place for special exhibits about Checker taxis, cars and specialty vehicles produced between 1921 and 1982. You will also get access to our permanent collection and former special exhibits here.We are open 24x7 to all interested parties around the world. Admission is free!", display.contentCenterX, header.y+250, display.contentWidth-20,display.contentHeight,native.systemFont, 18 )
 	intro:setFillColor(1,1,1,1)
+	HistoryGroup:insert(intro)
 	-- END intro
-	-- Insert elements to be located in ScrollDocsView
-	scrollDocsView:insert( intro)
+	scrollHistoryView:insert(intro)
+
+	sceneGroup:insert(HistoryGroup)
 end
 
 function scene:show( event )
